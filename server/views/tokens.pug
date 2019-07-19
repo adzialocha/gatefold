@@ -14,18 +14,10 @@ block content
 
     .form__group
       label.form__label(for='from') From (Airport)
-
-      .airport-selector.form__input
-        input.airport-selector__input(id='from', type='text')
-        input.airport-selector__hidden(name='from', type='hidden')
-        ul.airport-selector__list
+      .form__input(data-component="AirportSelector", data-props="{ \"name\": \"from\" }")
 
     .form__group
       label.form__label(for='to') To (Airport)
-
-      .airport-selector.form__input
-        input.airport-selector__input(id='to', type='text')
-        input.airport-selector__hidden(name='to', type='hidden')
-        ul.airport-selector__list
+      .form__input(data-component="AirportSelector", data-props="{ \"name\": \"to\" }")
 
     button.form__submit(type='submit') Create
