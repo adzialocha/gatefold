@@ -1,4 +1,4 @@
-function debounce(cb, wait) {
+export function debounce(cb, wait) {
   let timeout;
   const context = this;
 
@@ -13,11 +13,11 @@ function debounce(cb, wait) {
   };
 }
 
-function encode(str) {
+export function encode(str) {
   return encodeURIComponent(str);
 }
 
-function parameterize(obj) {
+export function parameterize(obj) {
   if (Object.keys(obj).length === 0) {
     return '';
   }
@@ -32,9 +32,3 @@ function parameterize(obj) {
     return `${encode(key)}=${encode(obj[key])}`;
   }).join('&');
 }
-
-module.exports = {
-  debounce,
-  encode,
-  parameterize,
-};

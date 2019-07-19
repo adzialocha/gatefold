@@ -1,8 +1,8 @@
-const { parameterize } = require('./utils');
+import { parameterize } from './utils';
 
 const API_BASE_PATH = '/api/';
 
-function request(path, data = {}, method = 'GET') {
+export default function request(path, data = {}, method = 'GET') {
   const args = {
     headers: {},
     method,
@@ -40,5 +40,3 @@ function request(path, data = {}, method = 'GET') {
       return payload;
     });
 }
-
-module.exports = request;
