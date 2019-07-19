@@ -38,7 +38,7 @@ npm run lint
 
 ## Deployment
 
-Make sure you have the environmental variable `NPM_CONFIG_PRODUCTION` set to `false` when deploying this application via [Heroku](https://devcenter.heroku.com/articles/nodejs-support#package-installation) to make sure the app can be build successfully.
+Make sure you have the environmental variable `NPM_CONFIG_PRODUCTION` set to `false` when deploying this application via [Heroku](https://devcenter.heroku.com/articles/nodejs-support#package-installation).
 
 ## License
 
