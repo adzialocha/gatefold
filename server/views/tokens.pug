@@ -1,0 +1,31 @@
+extends layout.pug
+
+block content
+  h2 New
+
+  form.form(method='POST')
+    .form__group
+      label.form__label(for='name') Name
+      input.form__input(id='name', name='name', type='text')
+
+    .form__group
+      label.form__label(for='email') Email address
+      input.form__input(id='email', name='email', type='email')
+
+    .form__group
+      label.form__label(for='from') From (Airport)
+
+      .airport-selector.form__input
+        input.airport-selector__input(id='from', type='text')
+        input.airport-selector__hidden(name='from', type='hidden')
+        ul.airport-selector__list
+
+    .form__group
+      label.form__label(for='to') To (Airport)
+
+      .airport-selector.form__input
+        input.airport-selector__input(id='to', type='text')
+        input.airport-selector__hidden(name='to', type='hidden')
+        ul.airport-selector__list
+
+    button.form__submit(type='submit') Create

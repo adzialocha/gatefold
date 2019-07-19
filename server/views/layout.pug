@@ -1,0 +1,42 @@
+doctype html
+html
+  head
+    meta(charset='utf-8')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge')
+    meta(name='viewport', content='width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0')
+    title Gatefold
+    link(rel='stylesheet', href='/app.css')
+  body
+    .wrapper
+      header.header
+        nav.navigation
+          ul.navigation__list
+            li.navigation__list-item
+              a.navigation__list-item-link(href='/') Home
+            li.navigation__list-item
+              a.navigation__list-item-link(href='/tokens') Create new
+            li.navigation__list-item
+              a.navigation__list-item-link(href='/about') About
+
+      if flash
+        .flash
+          if flash.error
+            each message in flash.error
+              .flash__message.flash__message--error= message
+          if flash.success
+            each message in flash.success
+              .flash__message.flash__message--success= message
+
+      main.main
+        block content
+
+      footer.footer
+        ul.footer-navigation
+          li.footer-navigation__item
+            a.footer-navigation__item-link(href='/privacy') Privacy
+          li.footer-navigation__item
+            a.footer-navigation__item-link(href='/imprint') Imprint
+          li.footer-navigation__item
+            a.footer-navigation__item-link(href='/contact') Contact
+
+    script(type='text/javascript', src='/app.js')
