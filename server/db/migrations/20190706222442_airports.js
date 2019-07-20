@@ -1,6 +1,7 @@
 exports.up = db => {
   return db.schema.createTable('airports', t => {
     t.increments('id').primary();
+    t.timestamps(false, true);
     t.string('iata', 3);
     t.string('country', 2);
     t.string('name', 255);

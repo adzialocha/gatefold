@@ -1,6 +1,7 @@
 exports.up = db => {
   return db.schema.createTable('payments', t => {
     t.increments('id').primary();
+    t.timestamps(false, true);
     t.integer('token_id').unique();
     t.string('name', 255);
     t.string('email', 255);
