@@ -56,15 +56,24 @@ function createToken(req, res) {
 }
 
 function showToken(req, res) {
-  // @TODO: Check if this was already paid
-
   db('tokens')
+    .leftJoin('payments', 'tokens.id', 'payments.token_id')
+    .select([
+      'payments.message as payment_message',
+      'payments.name as payment_name',
+      'payments.payment_amount as payment_amount',
+      'payments.payment_currency as payment_currency',
+      'payments.payment_id as payment_id',
+      'tokens.from_airport_id as from_id',
+      'tokens.name',
+      'tokens.to_airport_id as to_id',
+    ])
     .where('token', req.params.token)
     .first()
     .then(token => {
       return calculateCarbonOffset(
-        token.from_airport_id,
-        token.to_airport_id
+        token.from_id,
+        token.to_id
       )
         .then(calcuation => {
           const { emission, distance, costs, from, to } = calcuation;
@@ -72,6 +81,13 @@ function showToken(req, res) {
           res.render('checkout', {
             name: token.name,
             token: req.params.token,
+            isPaid: (token.payment_id !== undefined),
+            payment: {
+              amount: token.payment_amount,
+              currency: token.payment_currency,
+              message: token.payment_message,
+              name: token.payment_name,
+            },
             airports: {
               from,
               to,

@@ -19,14 +19,23 @@ block content
 
   p= `${calculation.distance} km`
   p= `${calculation.emission} kg CO2`
-  p
-    strong= `${calculation.costs} Euro`
 
-  form.form(method='POST')
-    input(type='hidden', name='_method', value='PUT')
+  if isPaid
+    hr
+    p
+      strong= `${payment.amount} Euro donated by ${payment.name}`
+    if payment.message
+      p= payment.message
+  else
+    hr
+    p
+      strong= `${calculation.costs} Euro`
 
-    +input-field('name', 'Name')
-    +input-field('email', 'Email address')
-    +textarea-field('message', 'Your message (optional)')
+    form.form(method='POST')
+      input(type='hidden', name='_method', value='PUT')
 
-    button.form__submit(type='submit') Pay
+      +input-field('name', 'Name')
+      +input-field('email', 'Email address')
+      +textarea-field('message', 'Your message (optional)')
+
+      button.form__submit(type='submit') Pay

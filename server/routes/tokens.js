@@ -20,6 +20,14 @@ const verifyToken = [
     .isInt({ min: 1 }),
 ];
 
+const verifyPayment = [
+  check('name', 'Name is missing')
+    .exists(),
+  check('email', 'Email is not correct or missing')
+    .exists()
+    .isEmail(),
+];
+
 router
   .get('/', tokensController.newToken);
 
@@ -30,7 +38,7 @@ router
   .get('/:token', tokensController.showToken);
 
 router
-  .put('/:token', checkoutController.createPayment);
+  .put('/:token', verifyPayment, checkoutController.createPayment);
 
 router
   .get('/:token/success', checkoutController.finalizePayment);
