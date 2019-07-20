@@ -78,7 +78,7 @@
     "webpack-cli": "^3.3.6"
   },
   "dependencies": {
-    "airports": "^1.0.0",
+    "airports-data": "^1.4.0",
     "body-parser": "^1.19.0",
     "classnames": "^2.2.6",
     "compression": "^1.7.4",

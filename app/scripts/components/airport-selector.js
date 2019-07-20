@@ -65,13 +65,15 @@ export default class AirportSelector extends Component {
         this.onChange(item);
       };
 
+      const label = `${item.name} - ${item.city}, ${item.country} [${item.iata}]`;
+
       return (
         <li
           className='airport-selector__search-list-item'
           key={item.id}
           onClick={onClick}
         >
-          { item.name } [{ item.iata }]
+          { label }
         </li>
       );
     });

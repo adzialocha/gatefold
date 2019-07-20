@@ -27,7 +27,8 @@ function findAirports(req, res) {
 
   return db('airports')
     .where('name', 'like', search)
-    .orWhere('iata', 'like', search)
+    .orWhere('city', 'like', search)
+    .orWhere('country', 'like', search)
     .limit(5)
     .then(data => {
       withSuccess(res, data);
