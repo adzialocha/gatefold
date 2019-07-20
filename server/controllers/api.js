@@ -43,7 +43,7 @@ function findAirportById(req, res) {
       if (!data.length) {
         withError(res, NOT_FOUND);
       } else {
-        withSuccess(res, data);
+        withSuccess(res, data[0]);
       }
     });
 }

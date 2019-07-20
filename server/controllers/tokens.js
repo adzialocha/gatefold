@@ -10,13 +10,11 @@ function createToken(req, res) {
   if (!errors.isEmpty()) {
     req.flash('error', 'Please check the missing fields below.');
 
-    res.render('new', {
+    return res.render('tokens', {
       errors: errors.mapped(),
       fields: req.body,
       flash: req.flash(),
     });
-
-    return;
   }
 
   res.render('tokens', { flash: req.flash() });

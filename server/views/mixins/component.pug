@@ -1,0 +1,6 @@
+mixin component(name, props={})
+  div(
+    class!=attributes.class,
+    data-component=name,
+    data-props=JSON.stringify(props)
+  )

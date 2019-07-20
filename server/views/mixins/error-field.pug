@@ -1,0 +1,3 @@
+mixin error-field(key)
+  if errors && errors[key]
+    .form__error= errors[key].msg

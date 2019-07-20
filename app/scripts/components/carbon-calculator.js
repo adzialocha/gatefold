@@ -36,12 +36,12 @@ export default class CarbonCalculator extends Component {
         <div className='carbon-calculator__airports'>
           <label for='from'>
             From airport
-            <AirportSelector name='from' onChange={this.onAirportChange} />
+            <AirportSelector name='from' value={this.props.from} onChange={this.onAirportChange} />
           </label>
 
           <label for='to'>
             To airport
-            <AirportSelector name='to' onChange={this.onAirportChange} />
+            <AirportSelector name='to' value={this.props.to} onChange={this.onAirportChange} />
           </label>
         </div>
       </div>

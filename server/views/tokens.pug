@@ -1,19 +1,25 @@
 extends layout.pug
 
+include mixins/component.pug
+include mixins/error-field.pug
+include mixins/input-field.pug
+
 block content
   h2 New
 
   form.form(method='POST')
-    .form__group
-      label.form__label(for='name') Name
-      input.form__input(id='name', required, name='name', type='text')
+    +input-field('name', 'Name')
+    +input-field('email', 'Email address')
 
     .form__group
-      label.form__label(for='email') Email address
-      input.form__input(id='email', required, name='email', type='email')
+      +error-field('from')
+      +error-field('to')
 
-    .form__group
-      label.form__label(for='calculator') Flying route
-      .form__input(id='calculator', data-component="CarbonCalculator")
+      label.form__label(for='from') Flying route
+
+      +component('CarbonCalculator', {
+        from: fields ? fields.from : null,
+        to: fields ? fields.to : null,
+      })(class='form__input')
 
     button.form__submit(type='submit') Create
