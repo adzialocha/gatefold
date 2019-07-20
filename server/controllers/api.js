@@ -38,12 +38,12 @@ function findAirports(req, res) {
 function findAirportById(req, res) {
   return db('airports')
     .where('id', req.params.id)
-    .select()
+    .first()
     .then(data => {
-      if (!data.length) {
+      if (!data) {
         withError(res, NOT_FOUND);
       } else {
-        withSuccess(res, data[0]);
+        withSuccess(res, data);
       }
     });
 }
