@@ -59,11 +59,13 @@ function showToken(req, res) {
   db('tokens')
     .leftJoin('payments', 'tokens.id', 'payments.token_id')
     .select([
+      'payments.created_at as payment_created_at',
       'payments.message as payment_message',
       'payments.name as payment_name',
       'payments.payment_amount as payment_amount',
       'payments.payment_currency as payment_currency',
       'payments.payment_id as payment_id',
+      'tokens.created_at',
       'tokens.from_airport_id as from_id',
       'tokens.name',
       'tokens.to_airport_id as to_id',
@@ -79,11 +81,13 @@ function showToken(req, res) {
           const { emission, distance, costs, from, to } = calcuation;
 
           res.render('checkout', {
+            createdAt: token.created_at,
             name: token.name,
             token: req.params.token,
-            isPaid: (token.payment_id !== undefined),
+            isPaid: !!token.payment_id,
             payment: {
               amount: token.payment_amount,
+              createdAt: token.payment_created_at,
               currency: token.payment_currency,
               message: token.payment_message,
               name: token.payment_name,

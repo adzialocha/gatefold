@@ -143,10 +143,6 @@ function finalizePayment(req, res) {
 }
 
 function cancelPayment(req, res) {
-  if (!req.session.paymentId) {
-    return res.render('404');
-  }
-
   req.session.payment = null;
   req.session.paymentId = null;
 

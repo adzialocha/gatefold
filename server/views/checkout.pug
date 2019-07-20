@@ -8,12 +8,13 @@ include mixins/textarea-field.pug
 block content
   h2 Pay carbon offset
 
-  p= `${name}`
+  p= name
+  p= createdAt
 
   hr
 
-  p= `${airports.from.city}`
-  p= `${airports.to.city}`
+  p= `${airports.from.city}, ${airports.from.name}`
+  p= `${airports.to.city}, ${airports.to.name}`
 
   hr
 
@@ -24,6 +25,8 @@ block content
     hr
     p
       strong= `${payment.amount} Euro donated by ${payment.name}`
+    p= payment.createdAt
+
     if payment.message
       p= payment.message
   else
