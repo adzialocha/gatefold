@@ -1,0 +1,13 @@
+extends layout.pug
+
+include mixins/component.pug
+include mixins/error-field.pug
+include mixins/input-field.pug
+
+block content
+  h2 Compensate
+
+  form.form(method='POST')
+    +input-field('name', 'Name')
+
+    button.form__submit(type='submit') Pay

@@ -5,7 +5,7 @@ const tokensController = require('../controllers/tokens');
 
 const router = express.Router();
 
-const verify = [
+const verifyToken = [
   check('name', 'Name is missing')
     .exists(),
   check('email', 'Email is not correct or missing')
@@ -22,11 +22,13 @@ const verify = [
 router
   .get('/', tokensController.newToken);
 
-// @TODO
-// router
-//   .get('/:token', tokensController.showToken);
+router
+  .post('/', verifyToken, tokensController.createToken);
 
 router
-  .post('/', verify, tokensController.createToken);
+  .get('/:token', tokensController.showToken);
+
+router
+  .put('/:token', tokensController.compensateToken);
 
 module.exports = router;
