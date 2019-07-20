@@ -6,18 +6,14 @@ block content
   form.form(method='POST')
     .form__group
       label.form__label(for='name') Name
-      input.form__input(id='name', name='name', type='text')
+      input.form__input(id='name', required, name='name', type='text')
 
     .form__group
       label.form__label(for='email') Email address
-      input.form__input(id='email', name='email', type='email')
+      input.form__input(id='email', required, name='email', type='email')
 
     .form__group
-      label.form__label(for='from') From (Airport)
-      .form__input(data-component="AirportSelector", data-props="{ \"name\": \"from\" }")
-
-    .form__group
-      label.form__label(for='to') To (Airport)
-      .form__input(data-component="AirportSelector", data-props="{ \"name\": \"to\" }")
+      label.form__label(for='calculator') Flying route
+      .form__input(id='calculator', data-component="CarbonCalculator")
 
     button.form__submit(type='submit') Create
