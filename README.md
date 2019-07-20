@@ -4,8 +4,9 @@ Carbon offset platform for artists.
 
 ## Requirements
 
-* NodeJS
+* NodeJS with npm
 * Postgresql database
+* PayPal account
 
 ## Setup
 
