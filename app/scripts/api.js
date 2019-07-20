@@ -28,8 +28,7 @@ export default function request(path, data = {}, method = 'GET') {
       }
 
       throw new TypeError(
-        `Something went wrong: ${response.statusText || 'Unknown error'}
-(${response.status})`
+        `Something went wrong: ${response.statusText || 'Unknown error'} (${response.status})`
       );
     })
     .then(payload => {

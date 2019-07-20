@@ -17,7 +17,6 @@ const elems = document.querySelectorAll('[data-component]');
   if (name) {
     // Render preact component
     const WrapperComponent = components[name].default;
-
     const props = ('props' in dataset) ? JSON.parse(dataset.props) : {};
 
     render((<WrapperComponent {...props} />), elem);
