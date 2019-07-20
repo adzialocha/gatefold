@@ -4,6 +4,7 @@ const cors = require('cors');
 const express = require('express');
 const flash = require('connect-flash');
 const helmet = require('helmet');
+const methodOverride = require('method-override');
 const session = require('express-session');
 
 const DEFAULT_PORT = 8080;
@@ -39,6 +40,15 @@ app.use(flash());
 // Enable compression and parsing form requests
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(compression());
+
+// Allow method override (PUT requests)
+app.use(methodOverride((req, res) => {
+  if (req.body && typeof req.body === 'object' && '_method' in req.body) {
+    const method = req.body._method;
+    delete req.body._method;
+    return method;
+  };
+}));
 
 // Setup CORS
 app.use(cors({

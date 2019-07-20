@@ -1,6 +1,6 @@
 import { parameterize } from './utils';
 
-const API_BASE_PATH = '/api/';
+const BASE_PATH = '/';
 
 export default function request(path, data = {}, method = 'GET') {
   const args = {
@@ -19,7 +19,7 @@ export default function request(path, data = {}, method = 'GET') {
     paramsStr = parameterize(data);
   }
 
-  return window.fetch(`${API_BASE_PATH}${path.join('/')}${paramsStr}`, args)
+  return window.fetch(`${BASE_PATH}${path.join('/')}${paramsStr}`, args)
     .then(response => {
       const contentType = response.headers.get('content-type');
 

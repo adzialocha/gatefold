@@ -1,20 +1,7 @@
-const { NOT_FOUND, getStatusText } = require('http-status-codes');
+const { NOT_FOUND } = require('http-status-codes');
 
 const db = require('../db');
-
-function withSuccess(res, data) {
-  return res.json({
-    status: 'ok',
-    data,
-  });
-}
-
-function withError(res, status) {
-  return res.status(status).json({
-    status: 'error',
-    error: getStatusText(status),
-  });
-}
+const { withSuccess, withError } = require('./');
 
 function findAirports(req, res) {
   const { query } = req.query;

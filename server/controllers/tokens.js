@@ -2,15 +2,12 @@ const crypto = require('crypto');
 const { validationResult } = require('express-validator');
 
 const db = require('../db');
+const { calculateCarbonOffset, getTokenUrl } = require('./');
 
 const TOKEN_LENGTH = 64;
 
 function generateRandomToken() {
   return crypto.randomBytes(TOKEN_LENGTH / 2).toString('hex');
-}
-
-function getShareUrl(id) {
-  return `${process.env.BASE_URL}/tokens/${id}`;
 }
 
 function newToken(req, res) {
@@ -41,7 +38,8 @@ function createToken(req, res) {
     to_airport_id: to,
   })
     .then(() => {
-      const url = getShareUrl(token);
+      const url = getTokenUrl(token);
+
       req.flash('success', `Thank you! ${url}`);
     })
     .catch(err => {
@@ -58,31 +56,34 @@ function createToken(req, res) {
 }
 
 function showToken(req, res) {
+  // @TODO: Check if this was already paid
+
   db('tokens')
     .where('token', req.params.token)
     .first()
-    .then(data => {
-      const { name } = data;
+    .then(token => {
+      return calculateCarbonOffset(
+        token.from_airport_id,
+        token.to_airport_id
+      )
+        .then(calcuation => {
+          const { emission, distance, costs, from, to } = calcuation;
 
-      res.render('compensate', {
-        name,
-        flash: req.flash(),
-      });
-    })
-    .catch(() => {
-      res.render('404');
-    });
-}
-
-function compensateToken(req, res) {
-  db('tokens')
-    .where('token', req.params.token)
-    .first()
-    .then(data => {
-      // @TODO
-      res.render('compensate', {
-        flash: req.flash(),
-      });
+          res.render('checkout', {
+            name: token.name,
+            token: req.params.token,
+            airports: {
+              from,
+              to,
+            },
+            calculation: {
+              emission: emission.toFixed(2),
+              distance: distance.toFixed(2),
+              costs: costs.toFixed(2),
+            },
+            flash: req.flash(),
+          });
+        });
     })
     .catch(() => {
       res.render('404');
@@ -90,7 +91,6 @@ function compensateToken(req, res) {
 }
 
 module.exports = {
-  compensateToken,
   createToken,
   newToken,
   showToken,

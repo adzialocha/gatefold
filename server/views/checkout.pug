@@ -1,0 +1,32 @@
+extends layout.pug
+
+include mixins/component.pug
+include mixins/error-field.pug
+include mixins/input-field.pug
+include mixins/textarea-field.pug
+
+block content
+  h2 Pay carbon offset
+
+  p= `${name}`
+
+  hr
+
+  p= `${airports.from.city}`
+  p= `${airports.to.city}`
+
+  hr
+
+  p= `${calculation.distance} km`
+  p= `${calculation.emission} kg CO2`
+  p
+    strong= `${calculation.costs} Euro`
+
+  form.form(method='POST')
+    input(type='hidden', name='_method', value='PUT')
+
+    +input-field('name', 'Name')
+    +input-field('email', 'Email address')
+    +textarea-field('message', 'Your message (optional)')
+
+    button.form__submit(type='submit') Pay

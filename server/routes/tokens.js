@@ -1,6 +1,7 @@
 const express = require('express');
 const { check } = require('express-validator');
 
+const checkoutController = require('../controllers/checkout');
 const tokensController = require('../controllers/tokens');
 
 const router = express.Router();
@@ -29,6 +30,12 @@ router
   .get('/:token', tokensController.showToken);
 
 router
-  .put('/:token', tokensController.compensateToken);
+  .put('/:token', checkoutController.createPayment);
+
+router
+  .get('/:token/success', checkoutController.finalizePayment);
+
+router
+  .get('/:token/cancel', checkoutController.cancelPayment);
 
 module.exports = router;

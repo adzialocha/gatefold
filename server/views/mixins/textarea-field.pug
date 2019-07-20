@@ -1,0 +1,11 @@
+include error-field.pug
+
+mixin textarea-field(key, label)
+  - var value = ''
+  if fields && fields[key]
+    - value = fields[key]
+
+  .form__group
+    +error-field(key)
+    label.form__label(for=key)= label
+    textarea.form__input.form__input--textarea(id=key, name=key)= value

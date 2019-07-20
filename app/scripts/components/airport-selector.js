@@ -1,7 +1,7 @@
 import classnames from 'classnames';
 import { h, Component } from 'preact';
 
-import request from '../api';
+import request from '../request';
 import { debounce } from '../utils';
 
 export default class AirportSelector extends Component {
@@ -160,7 +160,7 @@ export default class AirportSelector extends Component {
       isDisabled: true,
     });
 
-    return request(['airports', id])
+    return request(['api', 'airports', id])
       .then(({ data }) => {
         this.setState({
           isDisabled: false,
@@ -176,7 +176,7 @@ export default class AirportSelector extends Component {
   }
 
   fetchAirports(query) {
-    return request(['airports'], { query })
+    return request(['api', 'airports'], { query })
       .then(({ data }) => {
         this.setState({
           searchList: data,
