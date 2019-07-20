@@ -17,6 +17,7 @@ const port = process.env.PORT || DEFAULT_PORT;
 app.set('view engine', 'pug');
 app.set('views', 'server/views');
 app.set('x-powered-by', false);
+app.set('trust proxy', true);
 
 // Initialize session storage
 const KnexSessionStore = require('connect-session-knex')(session);
