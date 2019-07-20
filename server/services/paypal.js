@@ -1,7 +1,7 @@
 const paypal = require('paypal-rest-sdk');
 
 const payments = paypal.v1.payments;
-const env = process.env.NODE_ENV === 'production' ? 'LiveEnvironment' : 'SandboxEnvironment';
+const env = process.env.PAYPAL_ENV === 'live' ? 'LiveEnvironment' : 'SandboxEnvironment';
 
 const client = new paypal.core.PayPalHttpClient(
   new paypal.core[env](
