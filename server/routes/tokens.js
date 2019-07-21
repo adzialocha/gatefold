@@ -1,49 +1,55 @@
 const express = require('express');
-const { check } = require('express-validator');
 
 const checkoutController = require('../controllers/checkout');
 const tokensController = require('../controllers/tokens');
 
+const paymentsValidation = require('../validations/payments');
+const tokensValidation = require('../validations/tokens');
+
+const tokensMiddleware = require('../middlewares/tokens');
+
 const router = express.Router();
 
-const verifyToken = [
-  check('name', 'Name is missing')
-    .exists(),
-  check('email', 'Email is not correct or missing')
-    .exists()
-    .isEmail(),
-  check('from', 'Departure airport is missing')
-    .exists()
-    .isInt({ min: 1 }),
-  check('to', 'Destination airport is missing')
-    .exists()
-    .isInt({ min: 1 }),
-];
-
-const verifyPayment = [
-  check('name', 'Name is missing')
-    .exists(),
-  check('email', 'Email is not correct or missing')
-    .exists()
-    .isEmail(),
-];
+router
+  .get(
+    '/',
+    tokensController.newToken
+  );
 
 router
-  .get('/', tokensController.newToken);
+  .post(
+    '/',
+    tokensValidation.create,
+    tokensController.createToken
+  );
 
 router
-  .post('/', verifyToken, tokensController.createToken);
+  .get(
+    '/:token',
+    tokensMiddleware.findByToken,
+    checkoutController.showToken
+  );
 
 router
-  .get('/:token', tokensController.showToken);
+  .put(
+    '/:token',
+    tokensMiddleware.findByToken,
+    paymentsValidation.create,
+    checkoutController.createPayment
+  );
 
 router
-  .put('/:token', verifyPayment, checkoutController.createPayment);
+  .get(
+    '/:token/success',
+    tokensMiddleware.findByToken,
+    checkoutController.finalizePayment
+  );
 
 router
-  .get('/:token/success', checkoutController.finalizePayment);
-
-router
-  .get('/:token/cancel', checkoutController.cancelPayment);
+  .get(
+    '/:token/cancel',
+    tokensMiddleware.findByToken,
+    checkoutController.cancelPayment
+  );
 
 module.exports = router;

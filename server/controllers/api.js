@@ -1,6 +1,6 @@
 const { NOT_FOUND } = require('http-status-codes');
 
-const db = require('../db');
+const { findBySearchQuery, findById } = require('../models/airports');
 const { withSuccess, withError } = require('./');
 
 function findAirports(req, res) {
@@ -10,27 +10,19 @@ function findAirports(req, res) {
     return withSuccess(res, []);
   }
 
-  const search = `%${query}%`;
-
-  return db('airports')
-    .where('name', 'like', search)
-    .orWhere('city', 'like', search)
-    .orWhere('country', 'like', search)
-    .limit(5)
-    .then(data => {
-      withSuccess(res, data);
+  return findBySearchQuery(`%${query}%`)
+    .then(result => {
+      withSuccess(res, result);
     });
 }
 
 function findAirportById(req, res) {
-  return db('airports')
-    .where('id', req.params.id)
-    .first()
-    .then(data => {
-      if (!data) {
+  return findById(req.params.id)
+    .then(result => {
+      if (!result) {
         withError(res, NOT_FOUND);
       } else {
-        withSuccess(res, data);
+        withSuccess(res, result);
       }
     });
 }

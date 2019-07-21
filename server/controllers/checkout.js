@@ -1,14 +1,79 @@
-const { UNPROCESSABLE_ENTITY, INTERNAL_SERVER_ERROR } = require('http-status-codes');
 const { validationResult } = require('express-validator');
 
-const db = require('../db');
-const paypal = require('../services/paypal');
+const airports = require('../models/airports');
+const payments = require('../models/payments');
 
 const {
-  calculateCarbonOffset,
-  getTokenUrl,
-  withError,
-} = require('./');
+  calculateCosts,
+  calculateDistance,
+  calculateEmission,
+} = require('../../common/carbon-calculator');
+
+const paypal = require('../services/paypal');
+const { getTokenUrl } = require('./');
+
+function calculateCarbonOffset(token) {
+  return Promise.all([
+    airports.findById(token.from_airport_id),
+    airports.findById(token.to_airport_id),
+  ])
+    .then(([from, to]) => {
+      const distance = calculateDistance(from.lat, from.lon, to.lat, to.lon);
+      const emission = calculateEmission(distance);
+      const costs = calculateCosts(emission);
+
+      return Promise.resolve({
+        from,
+        to,
+        emission,
+        costs,
+        distance,
+      });
+    });
+}
+
+function showToken(req, res, extraFields = {}) {
+  const { token } = req;
+
+  return calculateCarbonOffset(token).then(offsetResult => {
+    const { from, to } = offsetResult;
+
+    const calculation = {
+      emission: offsetResult.emission.toFixed(2),
+      distance: offsetResult.distance.toFixed(2),
+      costs: offsetResult.costs.toFixed(2),
+    };
+
+    const payment = {
+      status: false,
+    };
+
+    payments.findPaidByTokenId(token.id).then(paymentResult => {
+      if (paymentResult) {
+        payment.status = true;
+        payment.amount = paymentResult.payment_amount;
+        payment.createdAt = paymentResult.created_at;
+        payment.currency = paymentResult.payment_currency;
+        payment.message = paymentResult.message;
+        payment.name = paymentResult.name;
+      }
+
+      res.render('checkout', {
+        ...extraFields,
+        createdAt: token.created_at,
+        name: token.name,
+        token: req.params.token,
+        payment,
+        airports: {
+          from,
+          to,
+        },
+        calculation,
+        flash: req.flash(),
+      });
+    });
+  });
+}
 
 function createPayment(req, res) {
   const errors = validationResult(req);
@@ -16,136 +81,104 @@ function createPayment(req, res) {
   if (!errors.isEmpty()) {
     req.flash('error', 'Please check the missing fields below.');
 
-    return res.render('checkout', {
+    return showToken(req, res, {
       errors: errors.mapped(),
       fields: req.body,
-      flash: req.flash(),
     });
   }
 
   const url = getTokenUrl(req.params.token);
 
-  db('tokens')
-    .select([
-      'payments.id as payment_id',
-      'tokens.name',
-      'tokens.from_airport_id as from_id',
-      'tokens.to_airport_id as to_id',
-    ])
-    .leftJoin('payments', 'tokens.id', 'payments.token_id')
-    .where('token', req.params.token)
-    .first()
-    .then(token => {
-      // Check if this is already paid?
-      if (token.payment_id) {
-        return res.render('404');
-      }
+  // Check if this is already paid?
+  payments.findPaidByTokenId(req.token.id).then(paymentResult => {
+    if (paymentResult) {
+      return Promise.reject(new Error('Token already paid'));
+    }
 
-      // Get the costs
-      return calculateCarbonOffset(
-        token.from_id,
-        token.to_id
-      );
+    return Promise.resolve();
+  }).then(() => {
+    return calculateCarbonOffset(req.token);
+  }).then(({ costs, emission }) => {
+    const description = `Gatefold - Carbon offset ${emission} kg CO2`;
+
+    // Prepare PayPal payment
+    paypal.createPayment({
+      amount: `${costs.toFixed(2)}`,
+      description,
+      orderUrl: url,
+      returnUrl: `${url}/success`,
+      cancelUrl: `${url}/cancel`,
     })
-    .then(({ emission, costs }) => {
-      const description = `Gatefold - Carbon offset ${emission} kg CO2`;
+      .then(payment => {
+        const { email, name, message } = req.body;
 
-      // Prepare PayPal payment
-      paypal.createPayment({
-        amount: `${costs.toFixed(2)}`,
-        description,
-        orderUrl: url,
-        returnUrl: `${url}/success`,
-        cancelUrl: `${url}/cancel`,
-      })
-        .then(data => {
-          req.session.paymentId = data.id;
-          req.session.payment = req.body;
+        const {
+          total,
+          currency,
+        } = payment.transactions[0].amount;
 
-          res.redirect(data.links.approval_url.href);
-        })
-        .catch(err => {
-          console.error(err);
-
-          withError(res, INTERNAL_SERVER_ERROR);
+        // Store payment already in database
+        return payments.create({
+          tokenId: req.token.id,
+          email,
+          message,
+          name,
+          paymentId: payment.id,
+          total,
+          currency,
+        }).then(() => {
+          res.redirect(payment.links.approval_url.href);
         });
-    })
-    .catch(() => {
-      res.render('404');
+      });
+  }).catch(err => {
+    console.error(err);
+
+    req.flash('error', 'Something went wrong ...');
+
+    return showToken(req, res, {
+      fields: req.body,
     });
+  });
 }
 
 function finalizePayment(req, res) {
   const paymentId = req.query.paymentId;
   const payerId = req.query.PayerID;
 
-  // Check if all needed parameters are given
-  if (
-    !paymentId ||
-    !payerId ||
-    !req.session.paymentId ||
-    !req.session.payment ||
-    paymentId !== req.session.paymentId
-  ) {
-    return res.render('404');
+  // Check if PayPal parameters are given
+  if (!paymentId || !payerId) {
+    return res.redirect(`/tokens/${req.params.token}`);
   }
 
-  // Get the token
-  db('tokens')
-    .leftJoin('payments', 'tokens.id', 'payments.token_id')
-    .select([
-      'payments.id as payment_id',
-      'tokens.id',
-    ])
-    .where('token', req.params.token)
-    .first()
-    .then(token => {
-      // Check if token was already paid
-      if (token.payment_id) {
-        return withError(res, UNPROCESSABLE_ENTITY);
-      }
+  payments.findPaidByTokenId(req.token.id).then(paymentResult => {
+    // Check if token was already paid
+    if (paymentResult) {
+      return Promise.reject(new Error('Token already paid'));
+    }
 
-      // Confirm payment
-      paypal.executePayment(paymentId, payerId)
-        .then(payment => {
-          const { name, email, message } = req.session.payment;
-
-          const { total, currency } = payment.result.transactions[0].amount;
-
-          return db('payments').insert({
-            token_id: token.id,
-            email,
-            name,
-            message,
-            payment_amount: total,
-            payment_currency: currency,
-            payment_id: paymentId,
-            payment_payer_id: payerId,
-          });
-        })
-        .then(() => {
-          req.session.payment = null;
-          req.session.paymentId = null;
-
-          req.flash('success', 'Thank you!');
-
-          res.redirect(`/tokens/${req.params.token}`);
-        })
-        .catch(err => {
-          console.error(err);
-
-          withError(res, INTERNAL_SERVER_ERROR);
+    // Check if payment exists in our database
+    return payments.findByPaymentId(paymentId);
+  }).then(paymentResult => {
+    // Confirm payment
+    return paypal.executePayment(paymentId, payerId)
+      .then(() => {
+        return payments.finalize(paymentResult.id, {
+          payerId,
         });
-    })
-    .catch(() => {
-      res.render('404');
-    });
+      })
+      .then(() => {
+        req.flash('success', 'Thank you!');
+        res.redirect(`/tokens/${req.params.token}`);
+      });
+  }).catch(err => {
+    console.error(err);
+
+    req.flash('error', 'Something went wrong ..');
+    res.redirect(`/tokens/${req.params.token}`);
+  });
 }
 
 function cancelPayment(req, res) {
-  req.session.payment = null;
-  req.session.paymentId = null;
-
   res.redirect(`/tokens/${req.params.token}`);
 }
 
@@ -153,4 +186,5 @@ module.exports = {
   cancelPayment,
   createPayment,
   finalizePayment,
+  showToken,
 };

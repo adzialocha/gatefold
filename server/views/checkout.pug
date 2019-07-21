@@ -21,7 +21,7 @@ block content
   p= `${calculation.distance} km`
   p= `${calculation.emission} kg CO2`
 
-  if isPaid
+  if payment.status
     hr
     p
       strong= `${payment.amount} Euro donated by ${payment.name}`
@@ -38,7 +38,7 @@ block content
       input(type='hidden', name='_method', value='PUT')
 
       +input-field('name', 'Name')
-      +input-field('email', 'Email address')
+      +input-field('email', 'Email address', 'email')
       +textarea-field('message', 'Your message (optional)')
 
       button.form__submit(type='submit') Pay

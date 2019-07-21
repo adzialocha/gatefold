@@ -11,7 +11,15 @@ exports.seed = db => {
           airports.forEach(airport => {
             const { type, iata, name, city, country, latitude, longitude } = airport;
 
-            if (type === 'airport') {
+            if (
+              type === 'airport' &&
+              iata &&
+              name &&
+              city &&
+              country &&
+              latitude &&
+              longitude
+            ) {
               chain = chain.then(() => {
                 return db('airports').insert({
                   city,

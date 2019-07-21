@@ -1,6 +1,6 @@
 exports.up = db => {
   return db.schema.alterTable('airports', t => {
-    t.string('city', 255);
+    t.string('city', 255).notNullable();
   });
 };
 
