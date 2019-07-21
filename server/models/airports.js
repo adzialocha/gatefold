@@ -8,6 +8,11 @@ function findBySearchQuery(query) {
     .limit(5);
 }
 
+function findAllById(ids) {
+  return db('airports')
+    .whereIn('id', ids);
+}
+
 function findById(id) {
   return db('airports')
     .where('id', id)
@@ -16,5 +21,6 @@ function findById(id) {
 
 module.exports = {
   findById,
+  findAllById,
   findBySearchQuery,
 };

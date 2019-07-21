@@ -10,4 +10,7 @@ router
 router
   .get('/airports/:id', apiController.findAirportById);
 
+router
+  .get('/tokens', apiController.findPaidTokens);
+
 module.exports = router;

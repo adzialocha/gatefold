@@ -29,7 +29,28 @@ function findByToken(token) {
     .first();
 }
 
+function findAllPaid() {
+  return db('tokens')
+    .leftJoin('payments', 'tokens.id', 'payments.token_id')
+    .select([
+      'payments.updated_at as payment_updated_at',
+      'payments.message as payment_message',
+      'payments.name as payment_name',
+      'payments.payment_amount',
+      'payments.payment_currency',
+      'payments.payment_success',
+      'tokens.id',
+      'tokens.created_at',
+      'tokens.name',
+      'tokens.from_airport_id',
+      'tokens.to_airport_id',
+    ])
+    .where('payment_success', true)
+    .orderBy('payment_updated_at', 'desc');
+}
+
 module.exports = {
   create,
+  findAllPaid,
   findByToken,
 };

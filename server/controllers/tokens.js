@@ -22,6 +22,7 @@ function createToken(req, res) {
 
   const { name, email, from, to } = req.body;
 
+  // @TODO: Store calculations in database
   tokens.create({ email, name, from, to })
     .then(([result]) => {
       const url = getTokenUrl(result.token);
