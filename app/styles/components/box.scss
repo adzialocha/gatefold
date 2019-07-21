@@ -30,3 +30,24 @@
 
   flex: 1;
 }
+
+@media (max-width: $mobile-breakpoint) {
+  .box {
+    display: block;
+  }
+
+  .box__sidebar,
+  .box__content {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .box__content {
+    margin-top: 2rem;
+    margin-left: 0;
+  }
+
+  .box__title {
+    font-weight: $font-weight-bold;
+  }
+}
