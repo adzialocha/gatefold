@@ -1,0 +1,36 @@
+// color definitions
+$black: #000;
+$white: #fff;
+
+// font weight definitions
+$font-weight-light: 300;
+$font-weight-regular: 400;
+$font-weight-medium: 500;
+$font-weight-bold: 700;
+
+// font size definitions
+$font-size-small: .9em;
+$font-size-regular: 1em;
+$font-size-medium: 1.2em;
+$font-size-large: 1.5em;
+
+// font family definitions
+$font-family-sans-serif: "Inter", Arial, sans-serif;
+
+// colors
+$color-base-text: $black;
+$color-base-background: $white;
+
+// fonts
+$font-base-family: $font-family-sans-serif;
+$font-base-size: 2.4em;
+$font-base-weight: $font-weight-medium;
+$font-heading-base-family: $font-family-sans-serif;
+$font-heading-base-size: $font-size-regular;
+$font-heading-base-weight: $font-weight-bold;
+
+// line height
+$base-line-height: 1.5;
+
+// z-index
+$z-index: ();

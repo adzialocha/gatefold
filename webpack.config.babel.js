@@ -69,6 +69,15 @@ export default (env, options) => {
             },
           ],
         },
+        {
+          test: /\.(woff(2)?|ttf|eot)(\?v=\d+\.\d+\.\d+)?$/,
+          loader: 'file-loader',
+          options: {
+            name: `${filename}.[ext]`,
+            outputPath: 'fonts',
+            publicPath: '/static/fonts/',
+          },
+        },
       ],
     },
     optimization: {
