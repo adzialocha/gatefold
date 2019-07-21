@@ -8,7 +8,8 @@ include mixins/textarea-field.pug
 block content
   if payment.status
     section.box
-      .box__sidebar Pay carbon offset
+      .box__sidebar
+        h2.box__title Pay carbon offset
 
       .box__content
         p #[strong #{payment.name}] paid carbon offset for #[strong #{name}], flying from #[strong #{airports.from.city}], #[strong #{airports.from.country}] to #[strong #{airports.to.city}], #[strong #{airports.to.country}].
@@ -19,7 +20,8 @@ block content
 
   else
     section.box
-      .box__sidebar Pay carbon offset
+      .box__sidebar
+        h2.box__title Pay carbon offset
 
       .box__content
         p You are asked to pay carbon offset for #[strong #{name}], flying from #[strong #{airports.from.city}], #[strong #{airports.from.country}] to #[strong #{airports.to.city}], #[strong #{airports.to.country}].
