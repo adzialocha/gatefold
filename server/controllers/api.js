@@ -29,6 +29,9 @@ function getAirportsFromTokens(tokens) {
   return airports.findAllById(ids)
     .then(result => {
       return result.reduce((acc, airport) => {
+        delete airport.created_at;
+        delete airport.updated_at;
+
         acc[airport.id] = airport;
         return acc;
       }, {});
