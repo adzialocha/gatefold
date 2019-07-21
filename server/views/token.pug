@@ -14,7 +14,7 @@ block content
         p
           strong Please send the following link to your employer and ask them to follow the instructions:
 
-        textarea.your-token-url(onClick="this.setSelectionRange(0, this.value.length)")= success
+        textarea.your-token-url(readonly, onClick="this.setSelectionRange(0, this.value.length)")= success
 
   else
     section.box
