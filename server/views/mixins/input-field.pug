@@ -8,4 +8,4 @@ mixin input-field(key, label, type='text')
   .form__group
     +error-field(key)
     label.form__label(for=key)= label
-    input.form__input(id=key, required, name=key, value=value, type=type)
+    input.form__input(id=key, name=key, value=value, type=type)

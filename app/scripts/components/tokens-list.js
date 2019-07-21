@@ -12,7 +12,7 @@ export default class TokensList extends Component {
       return;
     }
 
-    return <p>{ token.payment.message }</p>;
+    return <p className='tokens-list__item-message'>{ token.payment.message }</p>;
   }
 
   renderList() {
@@ -24,11 +24,11 @@ export default class TokensList extends Component {
           className='tokens-list__item'
           key={token.id}
         >
-          <p>{ payment.name } paid for { token.name }</p>
+          <p><strong>{ payment.name }</strong> paid <strong>{calculations.costs} Euro</strong> carbon offset for <strong>{ token.name }</strong>.</p>
+
+          <p>Return-flight from <strong>{ airports.from.city }</strong> to <strong>{ airports.to.city }</strong>.</p>
+
           { this.renderMessage(token) }
-          <p>{ airports.from.city } - { airports.to.city }</p>
-          <p>{ calculations.distance } km { calculations.emission } kg CO2</p>
-          <p><strong>{ calculations.costs } Euro</strong></p>
         </li>
       );
     });

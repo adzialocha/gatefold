@@ -1,0 +1,29 @@
+// .navigation {
+// }
+
+// .navigation__list {
+// }
+
+.navigation__caption {
+  margin-bottom: 2rem;
+
+  color: #aaa;
+
+  text-transform: lowercase;
+}
+
+.navigation__list-item {
+  color: $light-sea-green;
+
+  &::before {
+    display: inline-block;
+
+    margin-right: .5rem;
+
+    content: "※";
+  }
+}
+
+.navigation__list-item-link {
+  color: $light-sea-green;
+}

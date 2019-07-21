@@ -1,0 +1,33 @@
+// .airport-selector {
+// }
+
+.airport-selector__selection {
+  margin-bottom: 1rem;
+}
+
+// .airport-selector__search {
+// }
+
+.airport-selector__selection-button {
+  margin-left: 1rem;
+  padding: 0;
+
+  color: $gray-light;
+
+  background-color: transparent;
+}
+
+input[type="text"].airport-selector__search-input {
+  width: 100%;
+
+  background-color: $gray-lighter;
+}
+
+// .airport-selector__search-list {
+// }
+
+.airport-selector__search-list-item {
+  color: $light-sea-green;
+
+  cursor: pointer;
+}

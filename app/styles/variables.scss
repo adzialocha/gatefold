@@ -1,6 +1,11 @@
 // color definitions
 $black: #000;
+$gray-light: #aaa;
+$gray-lighter: #f9f9f9;
 $white: #fff;
+
+$light-sea-green: #20b2aa;
+$red: #dd0105;
 
 // font weight definitions
 $font-weight-light: 300;
@@ -23,7 +28,7 @@ $color-base-background: $white;
 
 // fonts
 $font-base-family: $font-family-sans-serif;
-$font-base-size: 2.4em;
+$font-base-size: 2.2em;
 $font-base-weight: $font-weight-medium;
 $font-heading-base-family: $font-family-sans-serif;
 $font-heading-base-size: $font-size-regular;
@@ -31,6 +36,9 @@ $font-heading-base-weight: $font-weight-bold;
 
 // line height
 $base-line-height: 1.5;
+
+// layout
+$page-margin: 2rem;
 
 // z-index
 $z-index: ();

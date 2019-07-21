@@ -1,0 +1,29 @@
+button,
+input[type="button"],
+input[type="reset"],
+input[type="submit"] {
+  display: inline-block;
+
+  padding: 1.5rem;
+
+  border: 0;
+  border-radius: 0;
+
+  white-space: nowrap;
+
+  color: $white;
+
+  background-color: $light-sea-green;
+
+  font-weight: $font-base-weight;
+
+  text-align: center;
+
+  cursor: pointer;
+
+  &[disabled] {
+    background-color: $gray-light;
+
+    cursor: default;
+  }
+}

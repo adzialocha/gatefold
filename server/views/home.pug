@@ -3,11 +3,16 @@ extends layout.pug
 include mixins/component.pug
 
 block content
-  h2 Home
+  section.box
+    .box__sidebar
+      h2.box__title Home
 
-  hr
+    .box__content
+      p Gatefold is a simple carbon offset site used by musicians who travel for a living. We ask our employers to pay these costs before we travel - these employers are festival promoters, venues, film directors, film companies, tv companies etc. We then tell other musicians to do the same. We then ask our fans and people in our network to do the same. We are using a network of musicians, promoters and fans which already exists, to directly affect our industry's carbon footprint.
 
-  h3 Paid tokens
-  +component('TokensList')
+  section.box
+    .box__sidebar
+      h2.box__title Paid tokens
 
-  hr
+    .box__content
+      +component('TokensList')

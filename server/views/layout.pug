@@ -7,36 +7,60 @@ html
     title Gatefold
     link(rel='stylesheet', href='/app.css')
   body
-    .wrapper
-      header.header
+    header.box
+      .box__sidebar
+        h1.logo
+          a.logo__link(href='/') Gatefold
+      .box__content
+        .caption A simple carbon offset for artists on the up.
+
         nav.navigation
           ul.navigation__list
             li.navigation__list-item
-              a.navigation__list-item-link(href='/') Home
+              a.navigation__list-item-link(href='/') Paid tokens
             li.navigation__list-item
-              a.navigation__list-item-link(href='/tokens') Create new
+              a.navigation__list-item-link(href='/tokens') Create new token
             li.navigation__list-item
               a.navigation__list-item-link(href='/about') About
 
-      if flash
-        .flash
-          if flash.error
-            each message in flash.error
-              .flash__message.flash__message--error= message
-          if flash.success
-            each message in flash.success
-              .flash__message.flash__message--success= message
+    if flash
+      if flash.error
+        section.box
+          .box__sidebar
+            .flash-icon.flash-icon--error
 
-      main.main
+          .box__content
+            each message in flash.error
+              .flash
+                .flash__message.flash__message--error= message
+
+      if flash.success
+        section.box
+          .box__sidebar
+            .flash-icon.flash-icon--success
+
+          .box__content
+            each message in flash.success
+              .flash
+                .flash__message.flash__message--success= message
+
+    main
+      article
         block content
 
-      footer.footer
-        ul.footer-navigation
-          li.footer-navigation__item
-            a.footer-navigation__item-link(href='/privacy') Privacy
-          li.footer-navigation__item
-            a.footer-navigation__item-link(href='/imprint') Imprint
-          li.footer-navigation__item
-            a.footer-navigation__item-link(href='/contact') Contact
+    footer.box.box--without-border
+      .box__sidebar
+
+      .box__content
+        nav.navigation
+          ul.navigation__list
+            li.navigation__list-item
+              a.navigation__list-item-link(href='/faq') FAQ
+            li.navigation__list-item
+              a.navigation__list-item-link(href='/privacy') Privacy
+            li.navigation__list-item
+              a.navigation__list-item-link(href='/imprint') Imprint
+            li.navigation__list-item
+              a.navigation__list-item-link(href='/contact') Contact
 
     script(type='text/javascript', src='/app.js')

@@ -6,39 +6,38 @@ include mixins/input-field.pug
 include mixins/textarea-field.pug
 
 block content
-  h2 Pay carbon offset
-
-  p= name
-  p= createdAt
-
-  hr
-
-  p= `${airports.from.city}, ${airports.from.name}`
-  p= `${airports.to.city}, ${airports.to.name}`
-
-  hr
-
-  p= `${calculation.distance} km`
-  p= `${calculation.emission} kg CO2`
-
   if payment.status
-    hr
-    p
-      strong= `${payment.amount} Euro donated by ${payment.name}`
-    p= payment.createdAt
+    section.box
+      .box__sidebar Pay carbon offset
 
-    if payment.message
-      p= payment.message
+      .box__content
+        p #[strong #{payment.name}] paid carbon offset for #[strong #{name}], flying from #[strong #{airports.from.city}], #[strong #{airports.from.country}] to #[strong #{airports.to.city}], #[strong #{airports.to.country}].
+
+        p The total flying distance is #[strong #{calculation.distance}] kilometers with a CO2 emission of #[strong #{calculation.emission}] kilogram.
+
+        p To offset this emission an amount of #[strong #{calculation.costs} Euro] was paid.
+
   else
-    hr
-    p
-      strong= `${calculation.costs} Euro`
+    section.box
+      .box__sidebar Pay carbon offset
 
-    form.form(method='POST')
-      input(type='hidden', name='_method', value='PUT')
+      .box__content
+        p You are asked to pay carbon offset for #[strong #{name}], flying from #[strong #{airports.from.city}], #[strong #{airports.from.country}] to #[strong #{airports.to.city}], #[strong #{airports.to.country}].
 
-      +input-field('name', 'Name')
-      +input-field('email', 'Email address', 'email')
-      +textarea-field('message', 'Your message (optional)')
+        p The total flying distance is #[strong #{calculation.distance}] kilometers with a CO2 emission of #[strong #{calculation.emission}] kilogram.
 
-      button.form__submit(type='submit') Pay
+        p To offset this emission you are asked to pay #[strong #{calculation.costs} Euro]. Please use the form below to pay via PayPal or credit card.
+
+    section.box
+      .box__sidebar
+        h2.box__title Form
+
+      .box__content
+        form.form(method='POST')
+          input(type='hidden', name='_method', value='PUT')
+
+          +input-field('name', 'Your name / organization')
+          +input-field('email', 'Your email address', 'email')
+          +textarea-field('message', 'Your message (optional, this will be made public)')
+
+          button.form__submit(type='submit', onClick="this.disabled = true") Pay via PayPal

@@ -2,7 +2,8 @@ const { check } = require('express-validator');
 
 const create = [
   check('name', 'Name is missing')
-    .exists(),
+    .exists()
+    .not().isEmpty(),
   check('email', 'Email is not correct or missing')
     .exists()
     .isEmail(),

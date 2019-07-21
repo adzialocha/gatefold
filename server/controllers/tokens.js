@@ -22,12 +22,13 @@ function createToken(req, res) {
 
   const { name, email, from, to } = req.body;
 
+  let success;
+
   // @TODO: Store calculations in database
   tokens.create({ email, name, from, to })
     .then(([result]) => {
-      const url = getTokenUrl(result.token);
-
-      req.flash('success', `Thank you! ${url}`);
+      success = getTokenUrl(result.token);
+      req.flash('success', 'Thank you! Your token was created successfully!');
     })
     .catch(err => {
       req.flash(
@@ -37,6 +38,7 @@ function createToken(req, res) {
     })
     .finally(() => {
       res.render('token', {
+        success,
         flash: req.flash(),
       });
     });

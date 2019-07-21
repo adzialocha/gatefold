@@ -1,0 +1,15 @@
+.flash {
+  color: $white;
+}
+
+.flash__message {
+  padding: 1.5rem;
+}
+
+.flash__message--success {
+  background-color: $light-sea-green;
+}
+
+.flash__message--error {
+  background-color: $red;
+}

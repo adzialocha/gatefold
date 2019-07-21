@@ -1,0 +1,49 @@
+textarea {
+  display: block;
+
+  min-width: 100%;
+  max-width: 100%;
+  min-height: 20rem;
+
+  padding: 1rem;
+}
+
+select {
+  cursor: pointer;
+}
+
+input[type="date"],
+input[type="email"],
+input[type="number"],
+input[type="password"],
+input[type="search"],
+input[type="text"],
+input[type="time"],
+input[type="url"],
+input:not([type]),
+textarea,
+select {
+  padding: 1rem;
+
+  appearance: none;
+
+  border: 0;
+  border-radius: 0;
+
+  color: $black;
+
+  background-color: $white;
+
+  font-weight: $font-base-weight;
+  font-family: $font-base-family;
+
+  &:focus {
+    outline: 0;
+  }
+
+  &[disabled] {
+    color: $gray-light;
+
+    cursor: default;
+  }
+}

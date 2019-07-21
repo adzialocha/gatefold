@@ -1,14 +1,10 @@
-html,
-body {
-  height: 100%;
-}
-
 html {
   font-size: 62.5%;
 }
 
 body {
   min-width: 32rem;
+  max-width: 90rem;
   min-height: 40rem;
 
   color: $color-base-text;

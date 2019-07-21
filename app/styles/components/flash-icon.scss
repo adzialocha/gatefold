@@ -1,0 +1,17 @@
+.flash-icon {
+  &::before {
+    display: inline-block;
+
+    margin-right: .5rem;
+
+    content: "※";
+  }
+}
+
+.flash-icon--success {
+  color: $light-sea-green;
+}
+
+.flash-icon--error {
+  color: $red;
+}

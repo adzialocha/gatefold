@@ -83,15 +83,12 @@ export default class AirportSelector extends Component {
     return (
       <div className='airport-selector__search'>
         <label for='airport-search'>
-          <span className='airport-selector__search-label'>
-            Find airport
-          </span>
-
           <input
             autocomplete='off'
             className='airport-selector__search-input'
             disabled={this.state.isDisabled}
             id={this.props.name}
+            placeholder='Enter Airport, City, Country ...'
             type='text'
             value={this.state.searchQuery}
             onInput={this.onSearchInput}

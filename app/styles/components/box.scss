@@ -1,0 +1,32 @@
+.box {
+  display: flex;
+
+  margin: $page-margin;
+  padding-bottom: $page-margin;
+
+  border-bottom: 3px $gray-lighter solid;
+}
+
+.box--without-border {
+  border-bottom: none;
+}
+
+.box__sidebar {
+  width: 15rem;
+  min-width: 15rem;
+  max-width: 15rem;
+}
+
+.box__title {
+  margin: 0;
+  padding: 0;
+
+  font-weight: $font-base-weight;
+  font-size: 1em;
+}
+
+.box__content {
+  margin-left: $page-margin;
+
+  flex: 1;
+}

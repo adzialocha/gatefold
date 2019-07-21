@@ -5,21 +5,46 @@ include mixins/error-field.pug
 include mixins/input-field.pug
 
 block content
-  h2 New
+  if success
+    section.box
+      .box__sidebar
+        h2.box__title Your token
 
-  form.form(method='POST')
-    +input-field('name', 'Name')
-    +input-field('email', 'Email address', 'email')
+      .box__content
+        p
+          strong Please send the following link to your employer and ask them to follow the instructions:
 
-    .form__group
-      +error-field('from')
-      +error-field('to')
+        textarea.your-token-url(onClick="this.setSelectionRange(0, this.value.length)")= success
 
-      label.form__label(for='from') Flying route
+  else
+    section.box
+      .box__sidebar
+        h2.box__title Create new token
 
-      +component('CarbonCalculator', {
-        from: fields ? fields.from : null,
-        to: fields ? fields.to : null,
-      })(class='form__input')
+      .box__content
+        p 1. Fill out this form, you will receive a link afterwards.
+        p 2. Send the link to your employer and ask them to follow the instructions.
+        p 3. Once they've paid, you will receive a notification.
+        p 4. Go play that show!
 
-    button.form__submit(type='submit') Create
+    section.box
+      .box__sidebar
+        h2.box__title Form
+
+      .box__content
+        form.form(method='POST')
+          +input-field('name', 'Your name')
+          +input-field('email', 'Your email address', 'email')
+
+          .form__group
+            +error-field('from')
+            +error-field('to')
+
+            label.form__label(for='from') How do you fly? (Roundtrip)
+
+            +component('CarbonCalculator', {
+              from: fields ? fields.from : null,
+              to: fields ? fields.to : null,
+            })(class='form__input')
+
+          button.form__submit(type='submit') Create

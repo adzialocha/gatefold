@@ -1,0 +1,18 @@
+// .tokens-list {
+// }
+
+.tokens-list__item {
+  padding: 2rem;
+
+  color: $white;
+
+  background-color: $black;
+
+  & + .tokens-list__item {
+    margin-top: 2rem;
+  }
+}
+
+.tokens-list__item-message {
+  font-style: italic;
+}

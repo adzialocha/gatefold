@@ -1,0 +1,28 @@
+// .carbon-calculator {
+// }
+
+.carbon-calculator__airports {
+  padding: 1.5rem;
+
+  background-color: $white;
+}
+
+.carbon-calculator__label {
+  display: block;
+
+  margin-bottom: 1rem;
+
+  text-decoration: underline;
+}
+
+.carbon-calculator__results {
+  padding: 1.5rem;
+
+  color: $white;
+
+  background-color: $black;
+}
+
+.carbon-calculator__results-costs {
+  font-weight: $font-weight-bold;
+}

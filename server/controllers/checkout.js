@@ -167,7 +167,7 @@ function finalizePayment(req, res) {
         });
       })
       .then(() => {
-        req.flash('success', 'Thank you!');
+        req.flash('success', 'Thank you! The offset was successfully paid!');
         res.redirect(`/tokens/${req.params.token}`);
       });
   }).catch(err => {

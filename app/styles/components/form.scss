@@ -1,0 +1,35 @@
+.form {
+  width: 100%;
+}
+
+.form__group {
+  width: 100%;
+
+  padding: 1.5rem;
+
+  background-color: $light-sea-green;
+
+  + .form__group {
+    margin-top: 1.5rem;
+  }
+}
+
+.form__label {
+  display: block;
+
+  margin-bottom: 1rem;
+
+  color: $white;
+}
+
+.form__input {
+  width: 100%;
+}
+
+.form__submit {
+  margin-top: 1.5rem;
+}
+
+.form__error {
+  color: $red;
+}
